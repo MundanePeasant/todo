@@ -1,0 +1,29 @@
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr 9fr;
+}
+
+.header {
+  background-color: red;
+  grid-area: 1 / 1 / 2 / 3;
+}
+
+.navbar {
+  background-color: aqua;
+  grid-area: 2 / 1 / 10 / 2;
+}
+
+.project-todos {
+  background-color: yellow;
+}
