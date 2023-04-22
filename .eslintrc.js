@@ -9,6 +9,6 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  ignorePatters: [".eslintrc.js", "webpack.config.js"],
+  ignorePatterns: [".eslintrc.js", "webpack.config.js","*.json"],
   rules: {},
 };
