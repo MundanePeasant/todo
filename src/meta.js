@@ -1,3 +1,5 @@
+import differenceInCalendarISOWeekYears from "date-fns/esm/fp/differenceInCalendarISOWeekYears/index.js";
+
 //layout factories and modules for each DOM maninpulation form
 const landingDOM = (function () {
   const createPage = () => {
@@ -15,9 +17,13 @@ const landingDOM = (function () {
   return { createPage };
 })();
 
-const resetDOM = (function () {
+//removes all children from a specified element
+const resetDOM = (() => {
   const reset = (className) => {
     const remove = document.getElementsByClassName(className)[0];
+    while (remove.childNodes.length > 1) {
+      remove.removeChild(remove.lastChild);
+    }
   };
 
   return { reset };

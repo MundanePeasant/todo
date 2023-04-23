@@ -11,7 +11,7 @@ body {
   width: 100vw;
   display: grid;
   grid-template-columns: 1fr 3fr;
-  grid-template-rows: 1fr 9fr;
+  grid-template-rows: 1fr 8fr;
 }
 
 .header {
@@ -21,7 +21,7 @@ body {
 
 .navbar {
   background-color: aqua;
-  grid-area: 2 / 1 / 10 / 2;
+  grid-area: 2 / 1 / -1 / 2;
 }
 
 .project-todos {

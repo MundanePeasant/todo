@@ -9,6 +9,10 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  ignorePatterns: [".eslintrc.js", "webpack.config.js","*.json"],
-  rules: {},
+  ignorePatterns: [".eslintrc.js", "webpack.config.js", "*.json"],
+  parser: "@babel/eslint-parser",
+  requireConfigFile: false,
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+  },
 };

@@ -4,6 +4,8 @@ const path = require("path");
 module.exports = {
   entry: {
     index: "./src/index.js",
+    project: "./src/project.js",
+    meta: "./src/meta.js",
   },
   devtool: "inline-source-map",
   plugins: [
@@ -30,6 +32,13 @@ module.exports = {
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: "asset/resource",
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+        },
       },
     ],
   },
