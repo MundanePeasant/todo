@@ -42,7 +42,6 @@ const projectLoad = (() => {
     const nav = document.getElementsByClassName("navbar")[0];
     const projDiv = document.createElement("div");
 
-    projDiv.classList.add("proj-container");
     const h1 = document.createElement("h1");
     h1.innerHTML = "Projects";
 
@@ -62,15 +61,35 @@ const projectLoad = (() => {
     loadChildren();
   };
 
+  const loadDiv = (element) => {
+    const div = document.createElement("div");
+    div.classList.add = "proj-container";
+
+    const proj = document.createElement("div");
+    proj.innerHTML = element.getName();
+    proj.classList.add("proj");
+
+    const del = document.createElement("div");
+    del.innerHTML = "X";
+    del.classList.add("proj-delete");
+    del.addEventListener("click", () => {
+      ProjectData.removeProject(element);
+      projectUpdate.reset();
+      loadChildren();
+    });
+
+    div.appendChild(proj);
+    div.appendChild(del);
+    return div;
+  };
+
   const loadChildren = () => {
     const nav = document.getElementsByClassName("navbar")[0];
 
     const projects = ProjectData.getProjects();
 
     projects.forEach((element) => {
-      const div = document.createElement("div");
-      div.innerHTML = element.getName();
-
+      const div = loadDiv(element);
       nav.appendChild(div);
     });
   };
