@@ -23,7 +23,8 @@ const ProjectData = (() => {
 
   const getProjects = () => projects;
 
-  const addProject = (project) => {
+  const addProject = (title) => {
+    const project = Project(title);
     projects.push(project);
   };
 
@@ -58,10 +59,14 @@ const projectLoad = (() => {
     const button = document.getElementById("project-add");
     button.addEventListener("click", function () {
       const project = Project("Added with button");
-      ProjectData.addProject(project);
-      projectUpdate.reset();
-      loadChildren();
+      console.log(project);
     });
+  };
+
+  const formLoad = (title) => {
+    ProjectData.addProject(title);
+    projectUpdate.reset();
+    loadChildren();
   };
 
   const loadChildren = () => {
@@ -81,9 +86,10 @@ const projectLoad = (() => {
     loadHeader();
     loadChildren();
     buttonListener();
+    projectForm.form();
   };
 
-  return { load };
+  return { load, formLoad };
 })();
 
 //projectUpdate
@@ -98,5 +104,50 @@ const projectUpdate = (() => {
 
 //projectForm
 //handles logic to take in info from form and create a new Project object, adding it to the project data list
+const projectForm = (() => {
+  //creates form popup and then submits the data
+  const form = () => {
+    const formPop = document.createElement("div");
+    formPop.classList.add("form-popup");
+    formPop.id = "myForm";
+
+    const form = document.createElement("form");
+    form.classList.add("form-container");
+
+    const title = document.createElement("h1");
+    title.innerHTML = "Project Name";
+    form.appendChild(title);
+
+    const inputName = document.createElement("input");
+    inputName.type = "text";
+    inputName.id = "projectName";
+    inputName.name = "projectName";
+    form.appendChild(inputName);
+
+    const button = document.createElement("button");
+    button.type = "submit";
+    button.innerHTML = "Submit";
+    button.addEventListener("click", (e) => {
+      console.log("hello");
+      e.preventDefault();
+      const inputField = document.getElementById("projectName");
+      const val = inputField.value;
+      console.log(val);
+
+      projectLoad.formLoad(val);
+    });
+
+    form.appendChild(button);
+
+    formPop.appendChild(form);
+    document.body.appendChild(formPop);
+  };
+
+  const formUpdate = () => {
+    //here change the form's class so it is displayed. this is called from the button
+  };
+
+  return { form };
+})();
 
 export { projectLoad, Project };
