@@ -27,3 +27,7 @@ body {
 .project-todos {
   background-color: yellow;
 }
+
+.form-popup {
+  display: none;
+}

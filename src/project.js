@@ -49,18 +49,11 @@ const projectLoad = (() => {
     const but = document.createElement("button");
     but.innerHTML = "Add Project";
     but.id = "project-add";
+    but.addEventListener("click", projectForm.toggleForm);
 
     projDiv.appendChild(h1);
     projDiv.appendChild(but);
     nav.appendChild(projDiv);
-  };
-
-  const buttonListener = () => {
-    const button = document.getElementById("project-add");
-    button.addEventListener("click", function () {
-      const project = Project("Added with button");
-      console.log(project);
-    });
   };
 
   const formLoad = (title) => {
@@ -85,7 +78,6 @@ const projectLoad = (() => {
   const load = () => {
     loadHeader();
     loadChildren();
-    buttonListener();
     projectForm.form();
   };
 
@@ -128,13 +120,12 @@ const projectForm = (() => {
     button.type = "submit";
     button.innerHTML = "Submit";
     button.addEventListener("click", (e) => {
-      console.log("hello");
       e.preventDefault();
       const inputField = document.getElementById("projectName");
       const val = inputField.value;
-      console.log(val);
 
       projectLoad.formLoad(val);
+      toggleForm();
     });
 
     form.appendChild(button);
@@ -143,11 +134,14 @@ const projectForm = (() => {
     document.body.appendChild(formPop);
   };
 
-  const formUpdate = () => {
-    //here change the form's class so it is displayed. this is called from the button
+  const toggleForm = () => {
+    //here change the form's class so it is displayed. this is called from the add button
+    const container = document.getElementById("myForm");
+    container.style.display =
+      container.style.display !== "block" ? "block" : "none";
   };
 
-  return { form };
+  return { form, toggleForm };
 })();
 
 export { projectLoad, Project };
