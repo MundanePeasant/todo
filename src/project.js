@@ -2,29 +2,46 @@ import { resetDOM } from "./meta";
 
 //create Project object
 //has a name and list of todos
-const Project = (title) => {
+const Project = (title, selected = false) => {
   let todos = [];
 
   const getName = () => title;
   const getTodos = () => todos;
+  const getSelected = () => selected;
   const addTodo = (todo) => todos.push(todo);
   const removeTodo = (todo) => {
     todos = todos.filter((item) => item !== todo);
   };
 
-  return { getName, getTodos, addTodo, removeTodo };
+  const changeSelected = (value) => {
+    selected = value;
+  };
+
+  const toString = () => {
+    return `Project: ${title}, Selected: ${selected}`;
+  };
+
+  return {
+    getName,
+    getTodos,
+    addTodo,
+    removeTodo,
+    getSelected,
+    changeSelected,
+    toString,
+  };
 };
 
 //projectData
 //holds all data relating to projects
 const ProjectData = (() => {
-  const newProject = Project("Coding Todos");
+  const newProject = Project("Example Project", true);
   let projects = [newProject];
 
   const getProjects = () => projects;
 
-  const addProject = (title) => {
-    const project = Project(title);
+  const addProject = (title, selected) => {
+    const project = Project(title, selected);
     projects.push(project);
   };
 
@@ -32,7 +49,17 @@ const ProjectData = (() => {
     projects = projects.filter((item) => item !== project);
   };
 
-  return { getProjects, addProject, removeProject };
+  const findSelected = () => {
+    if (projects.filter((item) => item.getSelected() === true).length > 0) {
+      const filt = projects.filter((item) => item.getSelected() === true);
+      return filt[0];
+    } else {
+      projects[0].changeSelected(true);
+      return projects[0];
+    }
+  };
+
+  return { getProjects, addProject, removeProject, findSelected };
 })();
 
 //projectView
@@ -56,18 +83,37 @@ const projectLoad = (() => {
   };
 
   const formLoad = (title) => {
-    ProjectData.addProject(title);
+    const selected = ProjectData.findSelected();
+    selected.changeSelected(false);
+    ProjectData.addProject(title, true);
     projectUpdate.reset();
     loadChildren();
   };
 
   const loadDiv = (element) => {
+    //gets selected Project
+    const selected = ProjectData.findSelected();
+    const project = element;
     const div = document.createElement("div");
     div.classList.add = "proj-container";
 
     const proj = document.createElement("div");
     proj.innerHTML = element.getName();
     proj.classList.add("proj");
+
+    if (element === selected) {
+      proj.classList.add("selected");
+    }
+
+    proj.addEventListener("click", () => {
+      selected.changeSelected();
+
+      const selectedDiv = document.getElementsByClassName("selected")[0];
+      selectedDiv.classList.remove("selected");
+
+      proj.classList.add("selected");
+      project.changeSelected();
+    });
 
     const del = document.createElement("div");
     del.innerHTML = "X";
