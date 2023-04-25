@@ -1,6 +1,6 @@
 import "./style.css";
-import { landingDOM } from "./meta";
-import { projectLoad, Project } from "./project";
+import { landingDOM, projectLoad, todoLoad } from "./meta";
 
 landingDOM.createPage();
 projectLoad.load();
+todoLoad.load();
