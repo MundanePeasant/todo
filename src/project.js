@@ -57,7 +57,12 @@ const ProjectData = (() => {
     }
   };
 
-  return { getProjects, addProject, removeProject, findSelected };
+  return {
+    getProjects,
+    addProject,
+    removeProject,
+    findSelected,
+  };
 })();
 
 //projectView

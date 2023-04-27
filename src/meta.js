@@ -1,3 +1,4 @@
+import roundToNearestMinutesWithOptions from "date-fns/esm/fp/roundToNearestMinutesWithOptions/index.js";
 import { Project, ProjectData } from "./project";
 import { Todo } from "./todo";
 
@@ -49,8 +50,10 @@ const projectLoad = (() => {
   };
 
   const formLoad = (title) => {
-    const selected = ProjectData.findSelected();
-    selected.changeSelected(false);
+    if (ProjectData.getProjects().length > 0) {
+      const selected = ProjectData.findSelected();
+      selected.changeSelected(false);
+    }
     ProjectData.addProject(title, true);
     projectUpdate.reset();
     loadChildren();
@@ -187,24 +190,157 @@ const todoLoad = (() => {
     const but = document.createElement("button");
     but.innerHTML = "Add Todo";
     but.id = "todo-add";
-    but.addEventListener("click", console.log("hello"));
+    but.addEventListener("click", todoForm.toggleForm);
 
     div.appendChild(h1);
     div.appendChild(but);
     body.appendChild(div);
   };
 
-  const load = () => {
-    loadHeader();
-    //loadChildren();
-    // projectForm.form();
+  const loadChildren = () => {
+    console.log("load children");
+    //get selected project & then populate
+    const todoBody = document.getElementsByClassName("project-todos")[0];
+    const proj = ProjectData.findSelected();
+
+    proj.getTodos().forEach((todo) => {
+      const cont = document.createElement("div");
+      cont.classList.add = "todo-container";
+
+      const name = document.createElement("div");
+      name.innerHTML = todo.getTitle();
+      cont.appendChild(name);
+
+      todoBody.appendChild(cont);
+    });
   };
 
-  return { load };
+  const load = () => {
+    loadHeader();
+    loadChildren();
+    todoForm.form();
+  };
+
+  return { load, loadChildren };
 })();
 
 //Todo Form
+const todoForm = (() => {
+  const form = () => {
+    const formPop = document.createElement("div");
+    formPop.classList.add("todo-form-popup");
+    formPop.id = "myForm-todo";
 
+    const form = document.createElement("form");
+    form.classList.add("form-container-todo");
+
+    const title = document.createElement("h1");
+    title.innerHTML = "Todo";
+    form.appendChild(title);
+
+    //name label and input
+    const nameLabel = document.createElement("label");
+    nameLabel.setAttribute("for", "name");
+    nameLabel.innerHTML = "Name";
+    form.appendChild(nameLabel);
+
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.id = "name";
+    nameInput.name = "name";
+    form.appendChild(nameInput);
+
+    //description label and input
+    const descLabel = document.createElement("label");
+    descLabel.setAttribute("for", "desc");
+    descLabel.innerHTML = "Description";
+    form.appendChild(descLabel);
+
+    const descInput = document.createElement("textarea");
+    descInput.id = "desc";
+    descInput.name = "desc";
+    form.appendChild(descInput);
+
+    formPop.appendChild(form);
+    document.body.appendChild(formPop);
+
+    //date label and input
+    const dateLabel = document.createElement("label");
+    dateLabel.setAttribute("for", "date");
+    dateLabel.innerHTML = "Due Date";
+    form.appendChild(dateLabel);
+
+    const dateInput = document.createElement("input");
+    dateInput.type = "date";
+    dateInput.id = "date";
+    dateInput.name = "date";
+    form.appendChild(dateInput);
+
+    //priority selection
+    const priorityLabel = document.createElement("label");
+    priorityLabel.setAttribute("for", "priority");
+    priorityLabel.innerHTML = "Priority";
+    form.appendChild(priorityLabel);
+
+    const selection = document.createElement("select");
+    selection.id = "priority";
+    selection.name = "priority";
+    form.appendChild(selection);
+
+    const low = document.createElement("option");
+    low.value = "low";
+    low.innerHTML = "Low";
+    selection.appendChild(low);
+
+    const med = document.createElement("option");
+    med.value = "medium";
+    med.innerHTML = "Medium";
+    selection.appendChild(med);
+
+    const high = document.createElement("option");
+    high.value = "high";
+    high.innerHTML = "High";
+    selection.appendChild(high);
+
+    const button = document.createElement("button");
+    button.type = "submit";
+    button.innerHTML = "Add Todo";
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(
+        document.getElementsByClassName("form-container-todo")[0]
+      );
+
+      const name = formData.get("name");
+      const desc = formData.get("desc");
+      const date = formData.get("date");
+      const priority = formData.get("priority");
+
+      const todo = Todo(name, desc, date, priority);
+      console.log(todo);
+
+      formLoad(todo);
+      toggleForm();
+    });
+    form.appendChild(button);
+  };
+
+  const toggleForm = () => {
+    //here change the form's class so it is displayed. this is called from the add button
+    const container = document.getElementById("myForm-todo");
+    container.style.display =
+      container.style.display !== "block" ? "block" : "none";
+  };
+
+  const formLoad = (value) => {
+    const project = ProjectData.findSelected();
+    project.addTodo(value);
+    todoLoad.loadChildren();
+  };
+
+  return { form, toggleForm };
+})();
 //Todo Update
 
 export { landingDOM, projectLoad, todoLoad };

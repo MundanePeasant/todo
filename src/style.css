@@ -31,3 +31,7 @@ body {
 .form-popup {
   display: none;
 }
+
+.todo-form-popup {
+  display: none;
+}
