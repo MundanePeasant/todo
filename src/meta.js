@@ -336,6 +336,7 @@ const todoForm = (() => {
   const formLoad = (value) => {
     const project = ProjectData.findSelected();
     project.addTodo(value);
+    resetDOM.reset("project-todos");
     todoLoad.loadChildren();
   };
 
