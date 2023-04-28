@@ -57,6 +57,8 @@ const projectLoad = (() => {
     ProjectData.addProject(title, true);
     projectUpdate.reset();
     loadChildren();
+    resetDOM.reset("project-todos");
+    todoLoad.loadChildren();
   };
 
   const loadDiv = (element) => {
@@ -79,9 +81,14 @@ const projectLoad = (() => {
 
       const selectedDiv = document.getElementsByClassName("selected")[0];
       selectedDiv.classList.remove("selected");
+      ProjectData.wipeSelected();
 
       proj.classList.add("selected");
-      project.changeSelected();
+      project.changeSelected(true);
+      projectUpdate.reset();
+      loadChildren();
+      resetDOM.reset("project-todos");
+      todoLoad.loadChildren();
     });
 
     const del = document.createElement("div");
@@ -91,6 +98,8 @@ const projectLoad = (() => {
       ProjectData.removeProject(element);
       projectUpdate.reset();
       loadChildren();
+      resetDOM.reset("project-todos");
+      todoLoad.loadChildren();
     });
 
     div.appendChild(proj);
@@ -112,6 +121,8 @@ const projectLoad = (() => {
   const load = () => {
     loadHeader();
     loadChildren();
+    resetDOM.reset("project-todos");
+    todoLoad.loadChildren();
     projectForm.form();
   };
 

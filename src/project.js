@@ -47,6 +47,12 @@ const ProjectData = (() => {
     projects = projects.filter((item) => item !== project);
   };
 
+  const wipeSelected = () => {
+    projects.forEach((item) => {
+      item.changeSelected(false);
+    });
+  };
+
   const findSelected = () => {
     if (projects.filter((item) => item.getSelected() === true).length > 0) {
       const filt = projects.filter((item) => item.getSelected() === true);
@@ -62,6 +68,7 @@ const ProjectData = (() => {
     addProject,
     removeProject,
     findSelected,
+    wipeSelected,
   };
 })();
 
