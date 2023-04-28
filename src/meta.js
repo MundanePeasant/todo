@@ -198,18 +198,48 @@ const todoLoad = (() => {
   };
 
   const loadChildren = () => {
-    console.log("load children");
     //get selected project & then populate
     const todoBody = document.getElementsByClassName("project-todos")[0];
     const proj = ProjectData.findSelected();
 
     proj.getTodos().forEach((todo) => {
       const cont = document.createElement("div");
-      cont.classList.add = "todo-container";
+      cont.classList.add("todo-container");
+
+      const check = document.createElement("input");
+      check.setAttribute("type", "checkbox");
+      check.classList.add("todo-status");
+      cont.appendChild(check);
 
       const name = document.createElement("div");
       name.innerHTML = todo.getTitle();
+      name.classList.add("todo-name");
       cont.appendChild(name);
+
+      const desc = document.createElement("div");
+      desc.innerHTML = todo.getDesc();
+      desc.classList.add("todo-desc");
+      cont.appendChild(desc);
+
+      const date = document.createElement("div");
+      date.innerHTML = todo.getDate();
+      date.classList.add("todo-date");
+      cont.appendChild(date);
+
+      const priority = document.createElement("div");
+      priority.innerHTML = todo.getPriority();
+      priority.classList.add("todo-priority");
+      cont.appendChild(priority);
+
+      const remove = document.createElement("div");
+      remove.innerHTML = "X";
+      remove.classList.add("todo-remove");
+      remove.addEventListener("click", () => {
+        proj.removeTodo(todo);
+        resetDOM.reset("project-todos");
+        todoLoad.loadChildren();
+      });
+      cont.appendChild(remove);
 
       todoBody.appendChild(cont);
     });
