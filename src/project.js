@@ -34,6 +34,8 @@ const Project = (title, selected = false) => {
 //holds all data relating to projects
 const ProjectData = (() => {
   let projects = [];
+  const newProject = Project("Example Project", true);
+  projects.push(newProject);
 
   const getProjects = () => projects;
 

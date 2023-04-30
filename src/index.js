@@ -1,8 +1,6 @@
 import "./style.css";
-import { landingDOM, projectLoad, todoLoad } from "./meta";
-import { getStorage } from "./storage";
+import { landingDOM, projectLoad, todoLoad, storage } from "./meta";
 
-getSelection();
 landingDOM.createPage();
 projectLoad.load();
 todoLoad.load();
