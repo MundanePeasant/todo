@@ -33,8 +33,7 @@ const Project = (title, selected = false) => {
 //projectData
 //holds all data relating to projects
 const ProjectData = (() => {
-  const newProject = Project("Example Project", true);
-  let projects = [newProject];
+  let projects = [];
 
   const getProjects = () => projects;
 
@@ -48,9 +47,11 @@ const ProjectData = (() => {
   };
 
   const wipeSelected = () => {
-    projects.forEach((item) => {
-      item.changeSelected(false);
-    });
+    if (projects.length > 0) {
+      projects.forEach((item) => {
+        item.changeSelected(false);
+      });
+    }
   };
 
   const findSelected = () => {

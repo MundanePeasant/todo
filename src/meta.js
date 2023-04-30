@@ -1,6 +1,7 @@
 import roundToNearestMinutesWithOptions from "date-fns/esm/fp/roundToNearestMinutesWithOptions/index.js";
 import { Project, ProjectData } from "./project";
 import { Todo } from "./todo";
+import { setStorage, getStorage, storageAvailable } from "./storage";
 
 //layout factories and modules for each DOM maninpulation form
 const landingDOM = (function () {
@@ -44,6 +45,8 @@ const projectLoad = (() => {
     but.id = "project-add";
     but.addEventListener("click", projectForm.toggleForm);
 
+    setStorage();
+    getStorage();
     projDiv.appendChild(h1);
     projDiv.appendChild(but);
     nav.appendChild(projDiv);
@@ -55,6 +58,7 @@ const projectLoad = (() => {
       selected.changeSelected(false);
     }
     ProjectData.addProject(title, true);
+    setStorage();
     projectUpdate.reset();
     loadChildren();
     resetDOM.reset("project-todos");
@@ -63,6 +67,7 @@ const projectLoad = (() => {
 
   const loadDiv = (element) => {
     //gets selected Project
+    getStorage();
     const selected = ProjectData.findSelected();
     const project = element;
     const div = document.createElement("div");
@@ -85,6 +90,7 @@ const projectLoad = (() => {
 
       proj.classList.add("selected");
       project.changeSelected(true);
+      setStorage();
       projectUpdate.reset();
       loadChildren();
       resetDOM.reset("project-todos");
@@ -96,6 +102,7 @@ const projectLoad = (() => {
     del.classList.add("proj-delete");
     del.addEventListener("click", () => {
       ProjectData.removeProject(element);
+      setStorage();
       projectUpdate.reset();
       loadChildren();
       resetDOM.reset("project-todos");
@@ -110,6 +117,8 @@ const projectLoad = (() => {
   const loadChildren = () => {
     const nav = document.getElementsByClassName("navbar")[0];
 
+    //GET DATA FROM GET STORAGE
+    getStorage();
     const projects = ProjectData.getProjects();
 
     projects.forEach((element) => {
@@ -209,8 +218,11 @@ const todoLoad = (() => {
   };
 
   const loadChildren = () => {
+    //CALL GET STORAGE
+    getStorage();
     //get selected project & then populate
     const todoBody = document.getElementsByClassName("project-todos")[0];
+    console.log(ProjectData.getProjects());
     const proj = ProjectData.findSelected();
 
     proj.getTodos().forEach((todo) => {
@@ -247,6 +259,7 @@ const todoLoad = (() => {
       remove.classList.add("todo-remove");
       remove.addEventListener("click", () => {
         proj.removeTodo(todo);
+        setStorage();
         resetDOM.reset("project-todos");
         todoLoad.loadChildren();
       });
@@ -359,7 +372,6 @@ const todoForm = (() => {
       const priority = formData.get("priority");
 
       const todo = Todo(name, desc, date, priority);
-      console.log(todo);
 
       formLoad(todo);
       toggleForm();
@@ -377,6 +389,7 @@ const todoForm = (() => {
   const formLoad = (value) => {
     const project = ProjectData.findSelected();
     project.addTodo(value);
+    setStorage();
     resetDOM.reset("project-todos");
     todoLoad.loadChildren();
   };
