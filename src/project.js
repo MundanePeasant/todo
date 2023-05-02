@@ -34,14 +34,18 @@ const Project = (title, selected = false) => {
 //holds all data relating to projects
 const ProjectData = (() => {
   let projects = [];
-  const newProject = Project("Example Project", true);
-  projects.push(newProject);
+  //const newProject = Project("Example Project", true);
+  //projects.push(newProject);
 
   const getProjects = () => projects;
 
   const addProject = (title, selected) => {
     const project = Project(title, selected);
     projects.push(project);
+  };
+
+  const addProjObj = (obj) => {
+    projects.push(obj);
   };
 
   const removeProject = (project) => {
@@ -72,6 +76,7 @@ const ProjectData = (() => {
     removeProject,
     findSelected,
     wipeSelected,
+    addProjObj,
   };
 })();
 

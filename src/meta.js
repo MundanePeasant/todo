@@ -96,6 +96,7 @@ const projectLoad = (() => {
     del.classList.add("proj-delete");
     del.addEventListener("click", () => {
       ProjectData.removeProject(element);
+      storage.set();
       projectUpdate.reset();
       loadChildren();
       resetDOM.reset("project-todos");
@@ -122,7 +123,7 @@ const projectLoad = (() => {
     loadHeader();
     loadChildren();
     resetDOM.reset("project-todos");
-    todoLoad.loadChildren();
+    todoLoad.load();
     projectForm.form();
   };
 
@@ -170,6 +171,7 @@ const projectForm = (() => {
       const val = inputField.value;
 
       projectLoad.formLoad(val);
+      storage.set();
       toggleForm();
     });
 
@@ -211,7 +213,6 @@ const todoLoad = (() => {
   const loadChildren = () => {
     //get selected project & then populate
     const todoBody = document.getElementsByClassName("project-todos")[0];
-    console.log(ProjectData.getProjects());
     const proj = ProjectData.findSelected();
 
     proj.getTodos().forEach((todo) => {
@@ -249,6 +250,7 @@ const todoLoad = (() => {
       remove.addEventListener("click", () => {
         proj.removeTodo(todo);
         resetDOM.reset("project-todos");
+        storage.set();
         todoLoad.loadChildren();
       });
       cont.appendChild(remove);
@@ -362,6 +364,7 @@ const todoForm = (() => {
       const todo = Todo(name, desc, date, priority);
 
       formLoad(todo);
+      storage.set();
       toggleForm();
     });
     form.appendChild(button);
@@ -387,16 +390,62 @@ const todoForm = (() => {
 
 const storage = (() => {
   const set = () => {
-    localStorage.setItem("projects", JSON.stringify(ProjectData.getProjects()));
+    const projects = ProjectData.getProjects();
+    if (projects.length <= 0) {
+      ProjectData.addProject("Example Project", true);
+    }
+    let projStrings = [];
+
+    projects.forEach((element) => {
+      const todos = element.getTodos();
+      let todoObjs = [];
+      todos.forEach((item) => {
+        var t = {
+          title: item.getTitle(),
+          desc: item.getDesc(),
+          dueDate: item.getDate(),
+          priority: item.getPriority(),
+        };
+
+        todoObjs.push(t);
+      });
+
+      var obj = {
+        name: element.getName(),
+        selected: element.getSelected(),
+        todos: todoObjs,
+      };
+      projStrings.push(obj);
+    });
+
+    localStorage.setItem("project", JSON.stringify(projStrings));
   };
+
   const get = () => {
-    const storedProjects = localStorage.getItem("projects");
-    if (storedProjects) {
-      ProjectData.getProjects().splice(
-        0,
-        ProjectData.getProjects().length,
-        ...JSON.parse(storedProjects)
-      );
+    const storedProjects = JSON.parse(localStorage.getItem("project"));
+
+    if (storedProjects === null) {
+      ProjectData.addProject("Example Project", true);
+      return;
+    } else {
+      storedProjects.forEach((proj) => {
+        //const projObj = Project(proj["title"], proj["desc"]);
+        const projObj = Project(proj["name"], proj["selected"]);
+        if (proj.todos.length === 0) {
+          return;
+        } else {
+          proj.todos.forEach((todo) => {
+            const todoObj = Todo(
+              todo["title"],
+              todo["desc"],
+              todo["dueDate"],
+              todo["priority"]
+            );
+            projObj.addTodo(todoObj);
+          });
+        }
+        ProjectData.addProjObj(projObj);
+      });
     }
   };
 

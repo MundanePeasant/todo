@@ -10,7 +10,11 @@ const Todo = (title, description, dueDate, priority) => {
     status = value;
   };
 
-  return { getTitle, getDesc, getDate, getPriority, changeStatus };
+  const toString = () => {
+    return `Title: ${title}, Desc: ${description}, Date: ${dueDate}, Priority: ${priority} `;
+  };
+
+  return { getTitle, getDesc, getDate, getPriority, changeStatus, toString };
 };
 
 export { Todo };
