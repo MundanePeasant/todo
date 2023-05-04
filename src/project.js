@@ -65,8 +65,12 @@ const ProjectData = (() => {
       const filt = projects.filter((item) => item.getSelected() === true);
       return filt[0];
     } else {
-      projects[0].changeSelected(true);
-      return projects[0];
+      if (projects[0] === undefined) {
+        return;
+      } else {
+        projects[0].changeSelected(true);
+        return projects[0];
+      }
     }
   };
 

@@ -6,6 +6,88 @@
   box-sizing: border-box;
 }
 
+/* noto-sans-100 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./fonts/NotoSans-Thin.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+/* noto-sans-200 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 200;
+  src: url("./fonts/NotoSans-ExtraLight.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+/* noto-sans-300 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 300;
+  src: url("./fonts/NotoSans-Light.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+/* noto-sans-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./fonts/NotoSans-Regular.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+/* noto-sans-500 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 500;
+  src: url("./fonts/NotoSans-Medium.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+/* noto-sans-600 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 600;
+  src: url("./fonts/NotoSans-SemiBold.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+/* noto-sans-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 700;
+  src: url("./fonts/NotoSans-Bold.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+/* noto-sans-800 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 800;
+  src: url("./fonts/NotoSans-ExtraBold.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+/* noto-sans-900 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 900;
+  src: url("./fonts/NotoSans-Black.ttf") format("truetype"); /* Safari, Android, iOS */
+}
+
+:root {
+  --white: #f1f6f9;
+  --navy: #394867;
+  --dark-blue: #212a3e;
+  --grey: #9ba4b5;
+
+  font-family: "Noto Sans", sans-serif;
+}
+
 body {
   height: 100vh;
   width: 100vw;
@@ -15,17 +97,81 @@ body {
 }
 
 .header {
-  background-color: red;
+  background-color: var(--dark-blue);
   grid-area: 1 / 1 / 2 / 3;
 }
 
 .navbar {
-  background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  background-color: var(--navy);
+  color: var(--white);
   grid-area: 2 / 1 / -1 / 2;
+  padding: 16px;
+  gap: 32px;
+}
+
+.navbar div:first-child {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 64px;
+}
+
+.proj-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 16px;
+  border-radius: 5px;
+}
+
+.proj {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.proj-delete {
+  font-size: 25px;
+  font-weight: 300;
+  background-color: rgb(112, 43, 43);
+  height: 25px;
+  width: 25px;
+  border-radius: 9999px;
+  text-align: center;
+  line-height: 25px; /* set line-height equal to the height of the element */
+}
+
+.proj-delete:hover {
+  cursor: pointer;
+}
+
+.proj-container:has(.proj.selected) {
+  background-color: var(--dark-blue);
+}
+
+#project-add {
+  background-color: var(--grey);
+  border: none;
+  border-radius: 9999px;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--white);
+  height: 40px;
+  width: 40px;
+}
+
+#project-add:hover {
+  cursor: pointer;
 }
 
 .project-todos {
-  background-color: yellow;
+  background-color: var(--white);
+  color: var(--navy);
+  padding: 16px;
 }
 
 .form-popup {

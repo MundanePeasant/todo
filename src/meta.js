@@ -1,6 +1,7 @@
-import roundToNearestMinutesWithOptions from "date-fns/esm/fp/roundToNearestMinutesWithOptions/index.js";
 import { Project, ProjectData } from "./project";
 import { Todo } from "./todo";
+
+ProjectData.getProjects();
 
 //layout factories and modules for each DOM maninpulation form
 const landingDOM = (function () {
@@ -31,6 +32,68 @@ const resetDOM = (() => {
   return { reset };
 })();
 
+const storage = (() => {
+  const set = () => {
+    const projects = ProjectData.getProjects();
+    if (projects.length <= 0) {
+      ProjectData.addProject("Example Project", true);
+    }
+    let projStrings = [];
+
+    projects.forEach((element) => {
+      const todos = element.getTodos();
+      let todoObjs = [];
+      todos.forEach((item) => {
+        var t = {
+          title: item.getTitle(),
+          desc: item.getDesc(),
+          dueDate: item.getDate(),
+          priority: item.getPriority(),
+        };
+
+        todoObjs.push(t);
+      });
+
+      var obj = {
+        name: element.getName(),
+        selected: element.getSelected(),
+        todos: todoObjs,
+      };
+      projStrings.push(obj);
+    });
+
+    localStorage.setItem("project", JSON.stringify(projStrings));
+  };
+
+  const get = () => {
+    const storedProjects = JSON.parse(localStorage.getItem("project"));
+
+    if (storedProjects === null) {
+      ProjectData.addProject("Example Project", true);
+      return;
+    } else {
+      storedProjects.forEach((proj) => {
+        const projObj = Project(proj["name"], proj["selected"]);
+        if (proj.todos.length === 0) {
+        } else {
+          proj.todos.forEach((todo) => {
+            const todoObj = Todo(
+              todo["title"],
+              todo["desc"],
+              todo["dueDate"],
+              todo["priority"]
+            );
+            projObj.addTodo(todoObj);
+          });
+        }
+        ProjectData.addProjObj(projObj);
+      });
+    }
+  };
+
+  return { set, get };
+})();
+
 const projectLoad = (() => {
   const loadHeader = () => {
     const nav = document.getElementsByClassName("navbar")[0];
@@ -40,7 +103,7 @@ const projectLoad = (() => {
     h1.innerHTML = "Projects";
 
     const but = document.createElement("button");
-    but.innerHTML = "Add Project";
+    but.innerHTML = "+";
     but.id = "project-add";
     but.addEventListener("click", projectForm.toggleForm);
 
@@ -66,7 +129,7 @@ const projectLoad = (() => {
     const selected = ProjectData.findSelected();
     const project = element;
     const div = document.createElement("div");
-    div.classList.add = "proj-container";
+    div.classList.add("proj-container");
 
     const proj = document.createElement("div");
     proj.innerHTML = element.getName();
@@ -92,7 +155,7 @@ const projectLoad = (() => {
     });
 
     const del = document.createElement("div");
-    del.innerHTML = "X";
+    del.innerHTML = "-";
     del.classList.add("proj-delete");
     del.addEventListener("click", () => {
       ProjectData.removeProject(element);
@@ -387,69 +450,5 @@ const todoForm = (() => {
   return { form, toggleForm };
 })();
 //Todo Update
-
-const storage = (() => {
-  const set = () => {
-    const projects = ProjectData.getProjects();
-    if (projects.length <= 0) {
-      ProjectData.addProject("Example Project", true);
-    }
-    let projStrings = [];
-
-    projects.forEach((element) => {
-      const todos = element.getTodos();
-      let todoObjs = [];
-      todos.forEach((item) => {
-        var t = {
-          title: item.getTitle(),
-          desc: item.getDesc(),
-          dueDate: item.getDate(),
-          priority: item.getPriority(),
-        };
-
-        todoObjs.push(t);
-      });
-
-      var obj = {
-        name: element.getName(),
-        selected: element.getSelected(),
-        todos: todoObjs,
-      };
-      projStrings.push(obj);
-    });
-
-    localStorage.setItem("project", JSON.stringify(projStrings));
-  };
-
-  const get = () => {
-    const storedProjects = JSON.parse(localStorage.getItem("project"));
-
-    if (storedProjects === null) {
-      ProjectData.addProject("Example Project", true);
-      return;
-    } else {
-      storedProjects.forEach((proj) => {
-        //const projObj = Project(proj["title"], proj["desc"]);
-        const projObj = Project(proj["name"], proj["selected"]);
-        if (proj.todos.length === 0) {
-          return;
-        } else {
-          proj.todos.forEach((todo) => {
-            const todoObj = Todo(
-              todo["title"],
-              todo["desc"],
-              todo["dueDate"],
-              todo["priority"]
-            );
-            projObj.addTodo(todoObj);
-          });
-        }
-        ProjectData.addProjObj(projObj);
-      });
-    }
-  };
-
-  return { set, get };
-})();
 
 export { landingDOM, projectLoad, todoLoad, storage };
