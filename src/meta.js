@@ -139,7 +139,7 @@ const projectLoad = (() => {
       proj.classList.add("selected");
     }
 
-    proj.addEventListener("click", () => {
+    div.addEventListener("click", () => {
       selected.changeSelected();
 
       const selectedDiv = document.getElementsByClassName("selected")[0];
@@ -259,12 +259,13 @@ const todoLoad = (() => {
   const loadHeader = () => {
     const body = document.getElementsByClassName("project-todos")[0];
     const div = document.createElement("div");
+    div.classList.add("todo-title-container");
 
     const h1 = document.createElement("h1");
     h1.innerHTML = "Todos";
 
     const but = document.createElement("button");
-    but.innerHTML = "Add Todo";
+    but.innerHTML = "+";
     but.id = "todo-add";
     but.addEventListener("click", todoForm.toggleForm);
 
