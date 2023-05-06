@@ -49,6 +49,7 @@ const storage = (() => {
           desc: item.getDesc(),
           dueDate: item.getDate(),
           priority: item.getPriority(),
+          status: item.getStatus(),
         };
 
         todoObjs.push(t);
@@ -81,7 +82,8 @@ const storage = (() => {
               todo["title"],
               todo["desc"],
               todo["dueDate"],
-              todo["priority"]
+              todo["priority"],
+              todo["status"]
             );
             projObj.addTodo(todoObj);
           });
@@ -152,6 +154,7 @@ const projectLoad = (() => {
       loadChildren();
       resetDOM.reset("project-todos");
       todoLoad.loadChildren();
+      storage.set();
     });
 
     const del = document.createElement("div");
@@ -286,6 +289,20 @@ const todoLoad = (() => {
       const check = document.createElement("input");
       check.setAttribute("type", "checkbox");
       check.classList.add("todo-status");
+      if (todo.getStatus()) {
+        check.checked = true;
+      }
+
+      check.addEventListener("change", function () {
+        if (this.checked) {
+          //we need to set the status as true
+          todo.changeStatus(true);
+        } else {
+          //set the status as false
+          todo.changeStatus(false);
+        }
+        storage.set();
+      });
       cont.appendChild(check);
 
       const name = document.createElement("div");
@@ -306,6 +323,7 @@ const todoLoad = (() => {
       const priority = document.createElement("div");
       priority.innerHTML = todo.getPriority();
       priority.classList.add("todo-priority");
+      priority.classList.add(`${todo.getPriority()}`);
       cont.appendChild(priority);
 
       const remove = document.createElement("div");
