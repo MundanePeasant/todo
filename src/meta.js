@@ -364,54 +364,69 @@ const todoForm = (() => {
     title.innerHTML = "Todo";
     form.appendChild(title);
 
+    const nameCont = document.createElement("div");
+    nameCont.classList.add("todo-cont");
+
     //name label and input
     const nameLabel = document.createElement("label");
     nameLabel.setAttribute("for", "name");
     nameLabel.innerHTML = "Name";
-    form.appendChild(nameLabel);
+    nameCont.appendChild(nameLabel);
 
     const nameInput = document.createElement("input");
     nameInput.type = "text";
     nameInput.id = "name";
     nameInput.name = "name";
-    form.appendChild(nameInput);
+    nameCont.appendChild(nameInput);
+
+    form.appendChild(nameCont);
+
+    const descCont = document.createElement("div");
+    descCont.classList.add("todo-cont");
 
     //description label and input
     const descLabel = document.createElement("label");
     descLabel.setAttribute("for", "desc");
     descLabel.innerHTML = "Description";
-    form.appendChild(descLabel);
+    descCont.appendChild(descLabel);
 
     const descInput = document.createElement("textarea");
     descInput.id = "desc";
     descInput.name = "desc";
-    form.appendChild(descInput);
+    descCont.appendChild(descInput);
 
-    formPop.appendChild(form);
-    document.body.appendChild(formPop);
+    form.appendChild(descCont);
+
+    const dateCont = document.createElement("div");
+    dateCont.classList.add("todo-cont");
 
     //date label and input
     const dateLabel = document.createElement("label");
     dateLabel.setAttribute("for", "date");
     dateLabel.innerHTML = "Due Date";
-    form.appendChild(dateLabel);
+    dateCont.appendChild(dateLabel);
 
     const dateInput = document.createElement("input");
     dateInput.type = "date";
     dateInput.id = "date";
     dateInput.name = "date";
-    form.appendChild(dateInput);
+    dateCont.appendChild(dateInput);
+
+    form.appendChild(dateCont);
 
     //priority selection
+    const priorityCont = document.createElement("div");
+    priorityCont.classList.add("todo-cont");
+
     const priorityLabel = document.createElement("label");
     priorityLabel.setAttribute("for", "priority");
     priorityLabel.innerHTML = "Priority";
-    form.appendChild(priorityLabel);
+    priorityCont.appendChild(priorityLabel);
 
     const selection = document.createElement("select");
     selection.id = "priority";
     selection.name = "priority";
-    form.appendChild(selection);
+    priorityCont.appendChild(selection);
 
     const low = document.createElement("option");
     low.value = "low";
@@ -427,6 +442,8 @@ const todoForm = (() => {
     high.value = "high";
     high.innerHTML = "High";
     selection.appendChild(high);
+
+    form.appendChild(priorityCont);
 
     const button = document.createElement("button");
     button.type = "submit";
@@ -450,6 +467,9 @@ const todoForm = (() => {
       toggleForm();
     });
     form.appendChild(button);
+
+    formPop.appendChild(form);
+    document.body.appendChild(formPop);
   };
 
   const toggleForm = () => {

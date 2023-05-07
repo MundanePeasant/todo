@@ -80,10 +80,10 @@
 }
 
 :root {
-  --white: #f1f6f9;
-  --navy: #394867;
-  --dark-blue: #212a3e;
-  --grey: #9ba4b5;
+  --white: rgb(241, 246, 249);
+  --navy: rgb(57, 72, 103);
+  --dark-blue: rgb(33, 42, 62);
+  --grey: rgb(149, 159, 177);
 
   font-family: "Noto Sans", sans-serif;
 }
@@ -93,7 +93,7 @@ body {
   width: 100vw;
   display: grid;
   grid-template-columns: 1fr 3fr;
-  grid-template-rows: 1fr 8fr;
+  grid-template-rows: minmax(75px, 75px) 8fr;
 }
 
 .header {
@@ -194,6 +194,7 @@ body {
   display: flex;
   justify-content: flex-start;
   gap: 64px;
+  width: 500px;
 }
 
 .todo-container {
@@ -256,14 +257,6 @@ body {
   cursor: pointer;
 }
 
-.form-popup {
-  display: none;
-}
-
-.todo-form-popup {
-  display: none;
-}
-
 .low,
 .medium,
 .high {
@@ -306,4 +299,133 @@ input[type="checkbox"]:hover {
   background-color: var(--navy);
   border: 2px solid var(--navy);
   cursor: pointer;
+}
+
+.form-popup {
+  display: none;
+  position: fixed;
+  background-color: rgba(149, 159, 177, 30%);
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  width: 500px;
+  height: 200px;
+  background-color: var(--grey);
+  border: none;
+  color: var(--dark-blue);
+  border-radius: 5px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-container > input[type="text"] {
+  border: none;
+  outline: none;
+  width: 75%;
+  font-size: 24px;
+  border-radius: 5px;
+  padding: 8px;
+  flex-grow: 1;
+}
+
+.form-container > button,
+.form-container-todo > button {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  background-color: var(--navy);
+  height: 32px;
+  width: 100px;
+  border-radius: 5px;
+  align-self: flex-end;
+}
+
+.form-container > button:hover,
+.form-container-todo > button:hover {
+  cursor: pointer;
+}
+
+.todo-form-popup {
+  display: none;
+  position: fixed;
+  background-color: rgba(149, 159, 177, 30%);
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.form-container-todo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  width: 500px;
+  height: 400px;
+  background-color: var(--grey);
+  border: none;
+  color: var(--dark-blue);
+  border-radius: 5px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.todo-cont {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.todo-cont > input[type="text"] {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.todo-cont > textarea {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 8px;
+  height: 64px;
+  flex-grow: 1;
+}
+
+.todo-cont > input[type="date"] {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.todo-cont > select {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 8px;
 }
